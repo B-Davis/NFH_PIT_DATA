@@ -1,8 +1,5 @@
+# National Fish Hatchery Tool for Columbia River Gorge complex
 
-#
-# Find out more about building applications with Shiny here:
-#
-#    https://shiny.posit.co/
 
 library(shiny)
 
