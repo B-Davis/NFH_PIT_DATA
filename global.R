@@ -22,8 +22,8 @@ ptagis_data <- read.csv(file, fileEncoding="UTF-16LE", stringsAsFactors = FALSE)
          Last.Year = year(Last.Date),
 # Add stock to blank fields (First four letters of Mark Site), beware of fish marked at other hatcheries or moved before their release like Warm Springs
          Stock = ifelse(
-           Stock == "", substr(Mark.Site.Info.Name, 1, 4), 
-            substr(Stock, 1, 4)),
+           Stock == "", toupper(substr(Mark.Site.Info.Name, 1, 4)), 
+           substr(Stock, 1, 4)),
         Stock = recode(Stock, "WARM" = "WSPH"),# Warm Springs stock was entered incorrectly, replaced it with PTAGIS's stock name
         Stock = recode(Stock, "SPRI" = "SPRC"),# Spring Creek stock was entered incorrectly, replaced it with PTAGIS's stock name
         Stock = recode(Stock, "SPRING CREEK" = "SPRC"), 
@@ -32,11 +32,10 @@ ptagis_data <- read.csv(file, fileEncoding="UTF-16LE", stringsAsFactors = FALSE)
         Stock = recode(Stock, "DES" = "ROBU"),
         Stock = recode(Stock, "SMAL" = "ROBU"), # Stock was entered smalls batch of fish, replaced it with PTAGIS's stock name
         Stock = recode(Stock, "BIGS" = "ROBU"), # Stock was entered bigs batch of fish, replaced it with PTAGIS's stock name
-        Stock = recode(Stock, "Will" = "WILL"),
 # In 2022, Round Butte fish were marked in the Pelton Ladder        
         Release.Site = recode(Release.Site, "PELTON - Pelton Ladder (Deschutes River) Acclimation Pond" = "ROBU - Round Butte Hatchery"), 
 # Willard program began with Carson stock
-        Stock = ifelse(Mark.Site.Info.Name == "WILL - Willard National Fish Hatchery", recode(Stock, "CARS" = "WILL"),  Stock)) 
+        Stock = ifelse(Mark.Site.Info.Name == "Willard National Fish Hatchery", recode(Stock, "CARS" = "WILL"),  Stock)) 
 
 # Transform data to add expansion calculation
 expanded_adult_return <- left_join(ptagis_data, release_data, by = c("Release.Site", "Brood.Year", "Run.Name", "Stock"))  %>% 
