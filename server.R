@@ -26,3 +26,5 @@ function(input, output, session) {
     })
 
 }
+
+runApp()
