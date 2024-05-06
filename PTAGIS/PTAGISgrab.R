@@ -1,4 +1,6 @@
 # install.packages(c("httr", "jsonlite"), repos='http://cran.us.r-project.org', dependencies=TRUE)
+# install.packages("lubridate", repos='http://cran.us.r-project.org', dependencies=TRUE)
+# install.packages("radian", repos='http://cran.us.r-project.org', dependencies=TRUE)
 
 library(httr)
 library(jsonlite)
@@ -26,3 +28,13 @@ dtm <- format(dtm,"%D %T %Z") # format to layperson style
 head(out)
 tail(out)
 
+# Retrieve PIT detection data from Brook's PTAGIS database query, automatically updated daily at 7:30 am
+url <- "https://api.ptagis.org/reporting/reports/brook/file/Complex_Interrogation_Summary.csv"
+path <- "data"
+file <- paste (path, "/PTAGIS_Download_", current_date, ".csv", sep="")
+curl_download(url, file) 
+
+
+search()
+library(curl)
+ls(2)
