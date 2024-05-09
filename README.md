@@ -1,9 +1,9 @@
 # NFH_PIT_DATA
 Shiny web application for up-to-date fish movement data
 
-test test checking 1, 2, 1, 2
+## Check-in/out Board
 
-**add important stuff here**
+**Brian** - 05/09/2024 going to change file structure and work on PTAGIS grab page....possibly add a button that refreshes data
 
 How to use this tool:
 Warm Springs NFH annual detections at Bonneville Dam
