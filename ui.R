@@ -24,7 +24,7 @@ library(shiny)
 fluidPage(
 
     # Application title
-    titlePanel("Old Faithful Geyser Data"),
+    titlePanel("2024 Expanded Adult Returns to Bonneville"),
 
     # Sidebar with a slider input for number of bins
     sidebarLayout(
@@ -38,7 +38,8 @@ fluidPage(
 
         # Show a plot of the generated distribution
         mainPanel(
-            plotOutput("distPlot")
+            tableOutput("bonnTable") ,
+            plotOutput("cummulativePlot") 
         )
     )
 )
