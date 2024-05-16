@@ -3,7 +3,7 @@ Shiny web application for up-to-date fish movement data
 
 ## Check-in/out Board
 
-**Brian** - 05/09/2024 going to change file structure and work on PTAGIS grab page....possibly add a button that refreshes data
+**Brian** - Deleted some code and files 05/16/2024
 
 **Brook** - 05/10/2024-05/10/2024 added additional PITAGIS data to PTAGIS grab page. I wasn't sure if you were done yet, I hope I didn't mess anything up. I also have a bunch of data massaging taking place in here. Maybe we can talk about where to put this and how to structure the global.R file.
 
