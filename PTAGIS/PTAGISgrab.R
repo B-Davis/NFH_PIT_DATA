@@ -13,6 +13,8 @@ rm(list = ls())
 ### Data ###
 ############
 
+# Before June 30 considered outmigrating juv 
+
 # Read in data from PTAGIS
 tmp <- httr::GET("https://api.ptagis.org/reporting/reports/brian_davis%40fws.gov/file/WS_Bon.csv")
 bin <- httr::content(tmp, "raw")
@@ -35,6 +37,7 @@ d <- d[-which(d$RelYear == 2069),] # remove records for now
 # Remove duplicate tags (same tag, different antennas); keeping most recent Bonneville observation
 d <- d[order(d$Last.Time, decreasing = TRUE),]
 d <- d[-which(duplicated(d[,c("Tag","ObsYear")])),]
+d <- d[order(d$Last.Time, decreasing = FALSE),] # reorder firt time observed -> last
 # Age variable (observation year - release year)
 d$Age <- with(d, ObsYear - RelYear)
 d$DOY <- as.integer((format(d$Last.Time,"%j"))) # Day of Year
@@ -47,32 +50,41 @@ head(d)
 ### Output ###
 ##############
 
+### Histogram ###
 # Create weekly bins for histograms
 DtRng <- sprintf(paste0(currYr,"-0%s-01"),c(3,9)) |> as.POSIXct()
 brks <- seq(DtRng[1],DtRng[2],by = "week")
 tmp <- format(brks,"%m/%d")
 brksNms <- paste(tmp[-length(tmp)],tmp[-1],sep = "-")
 
-
 nmsAge <- as.character(0:4)
 nmsYear <- as.character(unique(d$ObsYear))
-A <- array(0,dim = c(5,length(brks)-1,length(unique(d$ObsYear))),dimnames = list(nmsAge,brksNms,nmsYear))
+A_hist <- array(0,dim = c(5,length(brks)-1,length(unique(d$ObsYear))),dimnames = list(nmsAge,brksNms,nmsYear))
 for(j in nmsYear){
 tmp <- d[d$ObsYear == j,c("Age","Dts_sameyear")]
 tmp2 <- split(tmp[[2]],tmp[[1]])
 for(i in nmsAge){
     tryCatch({
-    A[i,,j] <- table(cut(tmp2[i][[1]],breaks = brks))
+    A_hist[i,,j] <- table(cut(tmp2[i][[1]],breaks = brks))
 },error = \(e){})
 }
 }
-# A
+A_hist
 
-#################
-### Histogram ###
-#################
+### Cumalitive ###
 
-barplot(A[,,"2023"],las = 2,beside = FALSE)
+L_cum <- list()
+for(i in seq_along(nmsYear)){
+    tmp <- d[d$ObsYear == nmsYear[i],]
+    L_cum[[nmsYear[i]]] <- cumsum(table(tmp$Dts_sameyear))
+}
+
+
+save("L_cum","A_hist","DtRng", file = "data/WarmSprings/WSdata.Rdata")
+rm(list = ls())
+
+
+########################################################################
 
 
 
@@ -86,8 +98,6 @@ plot(d$DOY,col = col)
 # Are they all mini jacks if detected in adult ladder?
 # CC <- c("3D9.1C2D76EC1A", "3D9.1C2DD63C95", "3D9.1C2DD657CB", "3D9.1C2DD667A4", 
 # "3DD.003D6A3BA6", "3DD.0077492EA9", "3DD.0077818CCE")
-
-# Figures
 
 
 
