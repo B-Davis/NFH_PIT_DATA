@@ -8,7 +8,7 @@
 # Didn't use Brook's subscription because it had too much info (other hatcheries etc.)
 # These parameters will likely need to be changed and massaged differently based on Brook's input.
 
-rm(list = ls())
+# rm(list = ls())
 ###########
 ### Data ###
 ############
@@ -18,7 +18,14 @@ rm(list = ls())
 # Read in data from PTAGIS
 tmp <- httr::GET("https://api.ptagis.org/reporting/reports/brian_davis%40fws.gov/file/WS_Bon.csv")
 bin <- httr::content(tmp, "raw")
-writeBin(bin, "data/WarmSprings/Bonny.csv") # pre massage
+writeBin(bin, "data/WarmSprings/Bonnydownload.csv") # pre massage
+
+# Script to ensure file is downloaded beofore reading in and massaging
+# Not sure this is necessary, maybe test later to see if needed
+while(!file.exists("data/WarmSprings/Bonnydownload.csv")){
+    Sys.sleep(.1)
+}
+file.rename("data/WarmSprings/Bonnydownload.csv","data/WarmSprings/Bonny.csv")
 
 ###############
 ### Massage ###
@@ -40,9 +47,12 @@ d <- d[-which(duplicated(d[,c("Tag","ObsYear")])),]
 d <- d[order(d$Last.Time, decreasing = FALSE),] # reorder firt time observed -> last
 # Age variable (observation year - release year)
 d$Age <- with(d, ObsYear - RelYear)
-d$DOY <- as.integer((format(d$Last.Time,"%j"))) # Day of Year
+d$DOY <- as.integer(format(d$Last.Time,"%j")) # Day of Year
 # Another observation date variable, but all same year for plotting purposes (derived from day-of-year)
 d$Dts_sameyear <- as.POSIXct(d$DOY*24*60**2,format = "%j",origin = as.POSIXct(paste0(currYr - 1,"-12-31")))
+d$Cutoff <- as.POSIXct(paste0(d$ObsYear,"-06-30")) # Cutoff Date (juv or mini-jack detected in adult ladder)
+i <- which(d$Age == 0 & d$Cutoff > d$Last.Time)
+d <- d[-i,] # Remove Juvenile observations 
 
 
 head(d)
@@ -69,7 +79,7 @@ for(i in nmsAge){
 },error = \(e){})
 }
 }
-A_hist
+# A_hist
 
 ### Cumalitive ###
 
@@ -86,7 +96,6 @@ tapply(d$Tag, list(d$ObsYear,d$Age),length)
 save("L_cum","A_hist","DtRng", file = "data/WarmSprings/WSdata.Rdata")
 rm(list = ls())
 
-tapply(d$Tag, list(d$ObsYear,d$Age),length)
 ########################################################################
 
 ####################################
