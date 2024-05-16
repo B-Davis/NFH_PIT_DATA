@@ -5,6 +5,8 @@ Shiny web application for up-to-date fish movement data
 
 **Brian** - 05/09/2024 going to change file structure and work on PTAGIS grab page....possibly add a button that refreshes data
 
+**Brook** - 05/10/2024-05/10/2024 added additional PITAGIS data to PTAGIS grab page. I wasn't sure if you were done yet, I hope I didn't mess anything up. I also have a bunch of data massaging taking place in here. Maybe we can talk about where to put this and how to structure the global.R file.
+
 How to use this tool:
 Warm Springs NFH annual detections at Bonneville Dam
 Previous annual detections

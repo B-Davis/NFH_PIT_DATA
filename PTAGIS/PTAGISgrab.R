@@ -106,13 +106,12 @@ plot(d$DOY,col = col)
 # install.packages("radian", repos='http://cran.us.r-project.org', dependencies=TRUE)
 # install.packages("shinythemes", repos='http://cran.us.r-project.org', dependencies=TRUE)
 
-# *******************************************
-# library(httr)
-# library(jsonlite)
-# library(curl)
-# library(dplyr)
-# library(readr)
-# library(lubridate)
+library(httr)
+library(jsonlite)
+library(curl)
+library(dplyr)
+library(readr)
+library(lubridate)
 
 # current_date <- as.Date(format(Sys.Date()))
 
@@ -169,6 +168,81 @@ plot(d$DOY,col = col)
 #   summarise(Unique.Tags.Detected = sum(Count) , Est.Over.Bonneville= sum(Est.Over.BONN)) %>% 
 #   ungroup() 
 # ****************************************************************
+
+# Calculate 95% Confidence Intervals using the binomial distribution
+  ci <- as.data.frame(BinomCI(expanded_adult_return$Unique.Tags.Detected, expanded_adult_return$Est.Over.Bonneville, conf.level = 0.95,  method = "clopper-pearson"))
+
+  expanded_adult_return <- bind_cols(expanded_adult_return,ci)
+  expanded_adult_return$LowerCI <- expanded_adult_return$Unique.Tags.Detected/expanded_adult_return$upr.ci
+  expanded_adult_return$UpperCI <- expanded_adult_return$Unique.Tags.Detected/expanded_adult_return$lwr.ci
+
+## Arrange by run and age
+  expanded_adult_return <- expanded_adult_return %>% 
+  group_by(Release.Site, Run.Name) %>% 
+  arrange(Run.Name, Mark.Site.Name, Age) %>% 
+    ungroup()
+
+  
+  # Import PTAGIS File for cumulative returns
+  url <- "https://api.ptagis.org/reporting/reports/brook/file/SCS_Adult_BONN_Gorge%20Complex%20and%20Round%20Butte.csv"
+  path <- "data"
+  file <- paste (path, "/PTAGIS_Returns_Download_", current_date, ".csv", sep="")
+  curl_download(url, file)  
+ 
+   adult_returns <- read.csv(file, header=TRUE, fileEncoding="UTF-16LE", stringsAsFactors = FALSE) %>% 
+    mutate(Last.Obs.Date.Min = as.Date(Last.Obs.Date.Min, "%m/%d/%Y"),
+           Year = format(Last.Obs.Date.Min, format="%Y"),
+           Day = format(Last.Obs.Date.Min, format="%m/%d"),
+           Interval = case_when(
+             Day <= "03/15" ~ "01.March-15",
+             Day <= "03/31" ~ "02.March-31",
+             Day <= "04/15" ~ "03.April-15",
+             Day <= "04/30" ~ "04.April-30",
+             Day <= "05/15" ~ "05.May-15",
+             Day <= "05/31" ~ "06.May-31",
+             Day <= "06/15" ~ "07.June-15",
+             Day <= "06/30" ~ "08.June-30",
+             Day <= "07/15" ~ "09.July-15",
+             Day <= "07/31" ~ "10.July-31",
+             Day <= "08/15" ~ "11.August-15",
+             Day >= "08/16" ~ "12.August-16+")) 
+  
+  ## Percent Cumulative Return - By Hatchery Release
+  
+  # Create a loop to summarize average cumulative return by hatchery to plot in one figure
+  Hatchery <- adult_returns %>% # Create a data frame that holds the hatchery names
+    distinct(Mark.Site.Name)
+  
+  # Create an empty data frame to hold loop data
+  adult_returns2 <- data.frame()
+  
+  # For Troubleshooting loop, replaces i with Warm Springs Hatchery
+  i=4 
+  
+  # The LOOP!
+  for (i in 1:nrow(Hatchery)) {
+    adult_returns1 <- adult_returns %>% 
+      filter(Mark.Site.Name == Hatchery[i,]) %>% # Filter by Hatchery
+      group_by(Year, Interval) %>% # Groups the annual return into two-week intervals
+      mutate(Return = sum(Unique.Tags)) %>% # The total number of returns in the two-week interval each year
+      select(1, 18, 20, 21) %>% # Clean up data frame, we don't need all these variables
+      unique() %>% # We don't need duplicates
+      group_by(Year)%>% # Calculate the cumulative return by two-week interval each year
+      arrange(Interval) %>% # Make sure two-week intervals are in order for the cumulative return calculation
+      mutate(Cumulative_Return = cumsum(Return), # Calculate the cumulative return for each interval, each year
+             Annual_Total = sum(Return), # Calculate total return each year
+             Perc_Cum_Return = Cumulative_Return/Annual_Total * 100) %>% # Calculate the percent of the annual return for each interval, each year
+      group_by(Interval) %>% # Scale up to summarize across years
+      na.omit() %>% # If there were no returns for an interval, drop the row of data
+      summarise(Average_Perc_Cum_Ret = mean(Perc_Cum_Return),# Average the cumulative return by two-week interval across years
+                sd = sd(Perc_Cum_Return), # Standard deviation - how widely scattered the averages are across years
+                se =sd/sqrt(length(Perc_Cum_Return))) %>%  # Standard error - how far the average is to be from the true mean (if we are interested in evaluating 95% confidence intervals)
+      mutate(Hatchery = Hatchery[i,])%>% # Add a column to indicate what hatchery this is summarizing
+      separate_wider_delim(Interval, delim = ".", names = c("Interval", "End Date"))  # Tidy Interval Labels for plotting
+    
+    adult_returns2 <- bind_rows(adult_returns2, adult_returns1) # Put the output of each Hatchery summary into one data frame so we can plot it
+    
+  }
 
 # vector
 # matrix
