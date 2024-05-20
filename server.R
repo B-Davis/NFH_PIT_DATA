@@ -10,42 +10,16 @@
 library(shiny)
 source("./global.R")
 
-# Define server logic required to draw a histogram
-function(input, output, session) {
+function (input,output){
 
-  output$bonnTable <- renderTable({
-    expanded_adult_return %>% 
-      mutate_at(vars(c(1, 5, 8, 9, 10)), as.integer)%>% 
-      mutate(Est.Over.Bonneville = as.integer(round(Est.Over.Bonneville, 0))) %>% 
-      filter(Last.Year == format(Sys.Date(), "%Y")) %>% # Current year only
-      select(Mark.Site.Name, 
-             Run.Name, 
-             Brood.Year, 
-             Age, 
-             PIT.Tagged, 
-             Released, 
-             Ratio, 
-             Stock, 
-             Unique.Tags.Detected, 
-             Est.Over.Bonneville, 
-             LowerCI, 
-             UpperCI) 
-          })
-  
-  output$cummulativePlot <- renderPlot({
-  ggplot(adult_returns2, aes(x=Interval, y=Average_Perc_Cum_Ret, color = Hatchery, group = Hatchery)) +
-                geom_point() +
-                geom_line()+
-                #geom_errorbar(aes(ymin=Average_Perc_Cum_Ret-se, ymax=Average_Perc_Cum_Ret+se))+
-                ggtitle("Spring Chinook - Average Cumulative Detections at Bonneville ") +
-                xlab("") + ylab("Average Cumulative Return (%)")+
-                scale_x_discrete(labels=BONN_Returns2$`End Date`)+
-                theme_bw()+
-                theme(legend.position = 'bottom', legend.direction = "vertical")+
-                theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1), text=element_text(face="bold", size=8))
-  })
-  
-  
+output$histWS <- renderPlot({
+  col <- RColorBrewer::brewer.pal(n = 8, name = "Dark2")[-c(4,5)]
+  par(mar = c(7,4,4,2) + .01)
+  dta <- A_hist[,,input$histyear]
+  x <- barplot(dta,las = 2,beside = FALSE,col = col, xaxt = "n", ylim = c(0,40))
+  text(cex=1, x=x-.8, y=-5.25, colnames(dta), xpd=TRUE, srt=45)
+  legend("topright",sprintf("Age-%s",0:4),fill = col[1:5],bty = "n")
+})
+
 }
 
-#runApp()
