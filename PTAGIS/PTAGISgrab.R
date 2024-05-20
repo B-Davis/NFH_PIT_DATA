@@ -13,7 +13,7 @@
 ### Data ###
 ############
 
-# Before June 30 considered outmigrating juv 
+# For Warm Springs releases, all fish detected at Bonneville before June 1 the year they were released are considered juvenile detections. Fish detected after June 30 in adult ladders the year they were released are considered minijacks. Fish detected at Bonneville in the juvenile bypass or the corner collector between June 1 - June 30 should be considered juveniles.
 
 # Read in data from PTAGIS
 tmp <- httr::GET("https://api.ptagis.org/reporting/reports/brian_davis%40fws.gov/file/WS_Bon.csv")
