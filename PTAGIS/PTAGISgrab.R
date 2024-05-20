@@ -158,7 +158,7 @@ for(i in seq_along(nmsYear)){
 
 tapply(d$Tag, list(d$ObsYear,d$Age),length)
 
-save("L_cum","A_hist","DtRng", file = "data/WarmSprings/WSdata.Rdata")
+save("L_cum","A_hist","DtRng","currYr", file = "data/WarmSprings/WSdata.Rdata")
 rm(list = ls())
 
 ########################################################################
