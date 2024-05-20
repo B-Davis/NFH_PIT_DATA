@@ -5,7 +5,7 @@ Shiny web application for up-to-date fish movement data
 
 **Brian** - Deleted some code and files 05/16/2024
 
-**Brook** - 05/10/2024-05/10/2024 added additional PITAGIS data to PTAGIS grab page. I wasn't sure if you were done yet, I hope I didn't mess anything up. I also have a bunch of data massaging taking place in here. Maybe we can talk about where to put this and how to structure the global.R file.
+**Brook** - 05/20/2024 Clarified juvenile and minijack cutoff dates at Bonneville. Brian, can we add Brood Year to your PTAGIS grab Query? That will make it easier to calculate age at detection.
 
 How to use this tool:
 Warm Springs NFH annual detections at Bonneville Dam
