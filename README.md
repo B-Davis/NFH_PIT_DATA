@@ -5,7 +5,7 @@ Shiny web application for up-to-date fish movement data
 
 **Brian** - Deleted some code and files 05/16/2024
 
-**Brook** - 05/20/2024 Clarified juvenile and minijack cutoff dates at Bonneville. Brook added Stock and Brood Year to a new PTAGIS Query "WS_BONN_Ladders.csv"
+**Brook** - 05/20/2024 Clarified juvenile and minijack cutoff dates at Bonneville. Brook added Stock and Brood Year to a new PTAGIS Query "WS_BONN_Ladders.csv". Added a dataframe to PTAGIS grab file in the massage section to add expansion.
 
 How to use this tool:
 Warm Springs NFH annual detections at Bonneville Dam
