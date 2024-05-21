@@ -5,8 +5,8 @@
 
 # WS_Bon currently runs every night at 01:00 am
 # A list of query parameters for WS_Bon.csv can be found "NFH_PIT_DATA\PTAGIS\WS_Bon_Attributes.html"
-# Didn't use Brook's subscription because it had too much info (other hatcheries etc.)
-# These parameters will likely need to be changed and massaged differently based on Brook's input.
+# WS_Bonn_Ladders currently runs every morning at 07:30 am
+# A list of query parameters for WS_Bonn_Ladders.csv can be found "NFH_PIT_DATA\PTAGIS\WS_Bonn_Ladders_Attributes.html"
 
 # rm(list = ls())
 ###########
@@ -16,7 +16,7 @@
 # For Warm Springs releases, all fish detected at Bonneville before June 1 the year they were released are considered juvenile detections. Fish detected after June 30 in adult ladders the year they were released are considered minijacks. Fish detected at Bonneville in the juvenile bypass or the corner collector between June 1 - June 30 should be considered juveniles.
 
 # Read in data from PTAGIS
-tmp <- httr::GET("https://api.ptagis.org/reporting/reports/brian_davis%40fws.gov/file/WS_Bon.csv")
+tmp <- httr::GET("https://api.ptagis.org/reporting/reports/brook/file/WS_Bonn_Ladders.csv")
 bin <- httr::content(tmp, "raw")
 writeBin(bin, "data/WarmSprings/Bonnydownload.csv") # pre massage
 
@@ -46,16 +46,81 @@ d <- d[order(d$Last.Time, decreasing = TRUE),]
 d <- d[-which(duplicated(d[,c("Tag","ObsYear")])),]
 d <- d[order(d$Last.Time, decreasing = FALSE),] # reorder firt time observed -> last
 # Age variable (observation year - release year)
-d$Age <- with(d, ObsYear - RelYear)
+d$Age <- with(d, ObsYear - Brood.Year)
 d$DOY <- as.integer(format(d$Last.Time,"%j")) # Day of Year
 # Another observation date variable, but all same year for plotting purposes (derived from day-of-year)
 d$Dts_sameyear <- as.POSIXct(d$DOY*24*60**2,format = "%j",origin = as.POSIXct(paste0(currYr - 1,"-12-31")))
-d$Cutoff <- as.POSIXct(paste0(d$ObsYear,"-06-30")) # Cutoff Date (juv or mini-jack detected in adult ladder)
-i <- which(d$Age == 0 & d$Cutoff > d$Last.Time)
+d$Cutoff <- as.POSIXct(paste0(d$ObsYear,"-06-30")) # Cutoff Dates are June 1  - June 30 (juveniles are detected in adult ladder before June 1, minijacks if detected after June 30)
+i <- which(d$Age <= 2 & d$Cutoff > d$Last.Time) # Spring Chinook are released at Age-2 and are considered minijacks if they return upstream at Age-2. Jacks are Age-3.
 d <- d[-i,] # Remove Juvenile observations 
 
-
 head(d)
+
+## Format Stock Names to join with Releases csv
+library(dplyr)
+d1 <- d %>% 
+  mutate(Stock.Name = case_when(
+    Stock == "WARM SPRINGS" ~ "WSPH",
+    Stock == "ROUND BUTTE" ~ "ROBU",
+    Stock == "PARKDALE" ~ "PARK",
+    TRUE ~ Stock ))  %>%  # Keep the original value if none of the conditions match  
+  rename(
+    "Brood.Year.YYYY" = "Brood.Year",
+    "Mark.Site.Name" = "Mark.Site",
+    "Release.Site.Name" = "Release.Site")
+
+## Import Releases file and join with d
+d2 <- read.csv("data/Releases.csv") %>% 
+  mutate(Expansion = Released/PIT.Tagged) 
+
+df <- left_join(d1,d2, by = c("Mark.Site.Name", "Release.Site.Name", "Brood.Year.YYYY", "Run.Name", "Stock.Name"))
+
+df <- df %>% 
+  distinct(Tag, .keep_all = TRUE) %>% # Make sure there are no duplicates
+  group_by(Tag) %>% 
+  mutate(Unique.Tags = n(),
+         Est.over.BONN = Unique.Tags * Expansion) %>% # Calculate expansion
+  group_by(ObsYear, 
+           Mark.Site.Name, 
+           Release.Site.Name, 
+           Run.Name, 
+           Brood.Year.YYYY, 
+           Species.Name, 
+           Rear.Type.Name, 
+           Age, 
+           PIT.Tagged, 
+           Released, 
+           Expansion, 
+           Stock.Name) %>%
+  summarise(Unique.Tags.Detected = sum(Unique.Tags) , Est.Over.Bonneville= sum(Est.over.BONN)) %>% 
+  ungroup() 
+
+# Calculate 95% Confidence Intervals using the binomial distribution
+ci <- as.data.frame(DescTools::BinomCI(df$Unique.Tags.Detected, df$Est.Over.Bonneville, conf.level = 0.95,  method = "clopper-pearson"))
+
+df <- bind_cols(df,ci) 
+df$LowerCI <- df$Unique.Tags.Detected/df$upr.ci
+df$UpperCI <- df$Unique.Tags.Detected/df$lwr.ci
+  
+df <- df %>% ## Arrange by run and age, rename fields to aid reading table
+  group_by(Release.Site.Name, Run.Name) %>% 
+  rename("Last Observation Year" = ObsYear,
+         "Hatchery" = Mark.Site.Name,
+         "Release Site"= Release.Site.Name,
+         "Run" = Run.Name,
+         "Brood Year" = Brood.Year.YYYY,
+         "Species" = Species.Name,
+         "Rear" = Rear.Type.Name,
+         "# PIT Tagged" = PIT.Tagged,
+         "# Released" = Released,
+         "Expansion (Rel/PIT)" = Expansion, 
+         "Stock" = Stock.Name,
+         "Unique Tags Detected" = Unique.Tags.Detected,
+         "# Adults Estimated Over Bonneville" = Est.Over.Bonneville,
+         "Lower CI" = LowerCI,
+         "Upper CI" = UpperCI) %>% 
+  arrange(Run, Hatchery, Age)  
+
 ##############
 ### Output ###
 ##############

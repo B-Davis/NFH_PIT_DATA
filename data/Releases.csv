@@ -1,0 +1,122 @@
+Mark.Site.Name,Release.Site.Name,Migration.Year,Brood.Year.YYYY,Released,PIT.Tagged,Species,Run.Name,Stock.Name,Notes
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,1997,1995,907708,4983,Chinook,Spring,CARS,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,1998,1996,1734188,7491,Chinook,Spring,CARS,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,1999,1997,1415744,12977,Chinook,Spring,CARS,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2000,1998,1430022,14992,Chinook,Spring,CARS,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2001,1999,1608684,14980,Chinook,Spring,CARS,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2002,2000,1449361,14983,Chinook,Spring,CARS,
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2002,2000,618822,3998,Chinook,Spring,WSPH,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2003,2001,1673255,14975,Chinook,Spring,CARS,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2004,2002,1417986,14973,Chinook,Spring,CARS,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2005,2003,1470134,14958,Chinook,Spring,CARS,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2006,2004,1209384,14971,Chinook,Spring,CARS,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2007,2005,1158425,14943,Chinook,Spring,CARS,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2008,2006,1330836,14884,Chinook,Spring,CARS,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2008,2006,934438,14941,Chinook,Spring,LWSH,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2008,2007,2001760,24885,Chinook,Fall,LWSH,URB
+SPRC - Spring Creek National Fish Hatchery,SPRC - Spring Creek National Fish Hatchery,2008,2007,14899270,14077,Chinook,Fall,SPRC,TULE
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2009,2007,1216198,14975,Chinook,Spring,CARS,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2009,2007,590763,7492,Chinook,Spring,LWSH,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2009,2008,4685907,24947,Chinook,Fall,LWSH,URB
+SPRC - Spring Creek National Fish Hatchery,SPRC - Spring Creek National Fish Hatchery,2009,2008,11252949,14636,Chinook,Fall,SPRC,TULE
+WILL - Willard National Fish Hatchery,WILL - Willard National Fish Hatchery,2009,2007,424569,7498,Chinook,Spring,WILL,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2010,2008,1278492,14940,Chinook,Spring,CARS,Stock should be changed to CARSON in PTAGIS in two PTAGIS files
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2010,2008,584803,7467,Chinook,Spring,LWSH,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2010,2009,4551259,24951,Chinook,Fall,LWSH,URB
+SPRC - Spring Creek National Fish Hatchery,SPRC - Spring Creek National Fish Hatchery,2010,2009,10750561,14933,Chinook,Fall,SPRC,TULE
+WILL - Willard National Fish Hatchery,WILL - Willard National Fish Hatchery,2010,2008,425541,7453,Chinook,Spring,WILL,
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2010,2008,705241,14907,Chinook,Spring,WSPH,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2011,2009,1058771,29548,Chinook,Spring,CARS,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2011,2009,600733,7482,Chinook,Spring,LWSH,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2011,2010,4475868,24878,Chinook,Fall,LWSH,URB
+SPRC - Spring Creek National Fish Hatchery,SPRC - Spring Creek National Fish Hatchery,2011,2010,10863339,14939,Chinook,Fall,SPRC,TULE
+WILL - Willard National Fish Hatchery,WILL - Willard National Fish Hatchery,2011,2009,399953,7490,Chinook,Spring,WILL,
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2011,2009,319887,14924,Chinook,Spring,WSPH,Warm Springs Stock
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2011,2009,217393,0,Chinook,Spring,ROBU,Round Butte Stock
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2012,2010,1126365,29479,Chinook,Spring,CARS,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2012,2010,759161,11959,Chinook,Spring,LWSH,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2012,2011,4569429,24947,Chinook,Fall,LWSH,URB
+SPRC - Spring Creek National Fish Hatchery,SPRC - Spring Creek National Fish Hatchery,2012,2011,11078704,14750,Chinook,Fall,SPRC,TULE
+WILL - Willard National Fish Hatchery,WILL - Willard National Fish Hatchery,2012,2010,246504,2961,Chinook,Spring,WILL,
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2012,2010,480945,14862,Chinook,Spring,WSPH,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2013,2011,1124042,29580,Chinook,Spring,CARS,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2013,2011,725725,10480,Chinook,Spring,LWSH,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2013,2012,4421578,14959,Chinook,Fall,LWSH,URB
+SPRC - Spring Creek National Fish Hatchery,SPRC - Spring Creek National Fish Hatchery,2013,2012,11242686,14940,Chinook,Fall,SPRC,TULE
+WILL - Willard National Fish Hatchery,WILL - Willard National Fish Hatchery,2013,2011,296082,4494,Chinook,Spring,WILL,
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2013,2011,803696,14965,Chinook,Spring,WSPH,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2014,2012,1127012,29399,Chinook,Spring,CARS,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2014,2012,875653,11991,Chinook,Spring,LWSH,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2014,2013,4406392,14925,Chinook,Fall,LWSH,URB
+SPRC - Spring Creek National Fish Hatchery,SPRC - Spring Creek National Fish Hatchery,2014,2013,10754482,14866,Chinook,Fall,SPRC,TULE
+WILL - Willard National Fish Hatchery,WILL - Willard National Fish Hatchery,2014,2012,122735,2993,Chinook,Spring,WILL,
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2014,2012,726942,14898,Chinook,Spring,WSPH,"Stock in PTAGIS should be ""WARM SPRINGS"" for 80 fish PIT tagged for Maureen's Project"
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2015,2013,1158389,14734,Chinook,Spring,CARS,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2015,2013,999205,14945,Chinook,Spring,LWSH,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2015,2014,3972526,14958,Chinook,Fall,LWSH,URB
+SPRC - Spring Creek National Fish Hatchery,SPRC - Spring Creek National Fish Hatchery,2015,2014,10415634,14929,Chinook,Fall,SPRC,TULE
+WILL - Willard National Fish Hatchery,WILL - Willard National Fish Hatchery,2015,2014,1803264,14934,Chinook,Fall,WILL,URB
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2015,2013,371455,14915,Chinook,Spring,WSPH,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2016,2014,1179771,14019,Chinook,Spring,CARS,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2016,2014,1323659,14974,Chinook,Spring,LWSH,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2016,2015,3961115,14823,Chinook,Fall,LWSH,URB
+SPRC - Spring Creek National Fish Hatchery,SPRC - Spring Creek National Fish Hatchery,2016,2015,10167948,14954,Chinook,Fall,SPRC,TULE
+WILL - Willard National Fish Hatchery,WILL - Willard National Fish Hatchery,2016,2015,1560812,14958,Chinook,Fall,WILL,URB
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2016,2014,133031,14975,Chinook,Spring,WSPH,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2017,2015,1264335,14967,Chinook,Spring,CARS,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2017,2016,4695028,14438,Chinook,Fall,LWSH,URB
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2017,2015,1082539,14964,Chinook,Spring,LWSH,
+ROBU - Round Butte Hatchery,PELTON - Pelton Ladder (Deschutes River) Acclimation Pond,2017,2015,320058,9913,Chinook,Spring,ROBU,Round Butte Stock
+SPRC - Spring Creek National Fish Hatchery,SPRC - Spring Creek National Fish Hatchery,2017,2016,10775114,14918,Chinook,Fall,SPRC,TULE
+WILL - Willard National Fish Hatchery,WILL - Willard National Fish Hatchery,2017,2016,1883016,14895,Chinook,Fall,WILL,URB
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2017,2015,414315,9896,Chinook,Spring,WSPH,Warm Springs Stock
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2017,2015,119399,4972,Chinook,Spring,PARK,Parkdale Stock
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2018,2016,1193201,14987,Chinook,Spring,CARS,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2018,2017,4283371,14840,Chinook,Fall,LWSH,URB
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2018,2016,1078134,14935,Chinook,Spring,LWSH,
+ROBU - Round Butte Hatchery,PELTON - Pelton Ladder (Deschutes River) Acclimation Pond,2018,2016,387771,14616,Chinook,Spring,ROBU,Round Butte Stock
+SPRC - Spring Creek National Fish Hatchery,SPRC - Spring Creek National Fish Hatchery,2018,2017,10737862,14907,Chinook,Fall,SPRC,TULE
+WILL - Willard National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2018,2017,1003619,7483,Chinook,Fall,WILL,"URB, some released into Drano Lake"
+WILL - Willard National Fish Hatchery,WILL - Willard National Fish Hatchery,2018,2017,957710,7489,Chinook,Fall,WILL,URB
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2018,2016,541441,14903,Chinook,Spring,WSPH,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2019,2017,1251408,14973,Chinook,Spring,CARS,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2019,2018,4484655,14775,Chinook,Fall,LWSH,URB
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2019,2017,1041097,14968,Chinook,Spring,LWSH,
+ROBU - Round Butte Hatchery,PELTON - Pelton Ladder (Deschutes River) Acclimation Pond,2019,2017,383690,14917,Chinook,Spring,ROBU,Round Butte Stock
+SPRC - Spring Creek National Fish Hatchery,SPRC - Spring Creek National Fish Hatchery,2019,2018,11226628,15225,Chinook,Fall,SPRC,TULE
+WILL - Willard National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2019,2018,431319,7479,Chinook,Fall,WILL,URB
+WILL - Willard National Fish Hatchery,WILL - Willard National Fish Hatchery,2019,2018,428147,7478,Chinook,Fall,WILL,URB
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2019,2017,764240,12887,Chinook,Spring,WSPH,Warm Springs Stock
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2019,2017,123541,2097,Chinook,Spring,ROBU,Round Butte Stock
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2020,2018,1071627,14981,Chinook,Spring,CARS,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2020,2018,1089520,14964,Chinook,Spring,LWSH,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2020,2019,4773319,14848,Chinook,Fall,LWSH,URB
+ROBU - Round Butte Hatchery,PELTON - Pelton Ladder (Deschutes River) Acclimation Pond,2020,2018,394629,14675,Chinook,Spring,ROBU,Round Butte Stock
+WILL - Willard National Fish Hatchery,WILL - Willard National Fish Hatchery,2020,2019,1055737,7422,Chinook,Fall,WILL,URB
+WILL - Willard National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2020,2019,1150638,7466,Chinook,Fall,WILL,URB
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2020,2018,281133,7944,Chinook,Spring,WSPH,
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2020,2018,230310,6566,Chinook,Spring,ROBU,
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2020,2018,135798,3884,Chinook,Spring,PARK,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2021,2019,1217371,14995,Chinook,Spring,CARS,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2021,2019,1147108,14983,Chinook,Spring,LWSH,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2021,2020,4950000,14982,Chinook,Fall,LWSH,URB
+WILL - Willard National Fish Hatchery,WILL - Willard National Fish Hatchery,2021,2020,1319486,7484,Chinook,Fall,WILL,URB
+WILL - Willard National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2021,2020,879870,7487,Chinook,Fall,WILL,URB
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2021,2019,267461,14986,Chinook,Spring,WSPH,
+ROBU - Round Butte Hatchery,PELTON - Pelton Ladder (Deschutes River) Acclimation Pond,2021,2019,355309,14710,Chinook,Spring,ROBU,Round Butte Stock
+SPRC - Spring Creek National Fish Hatchery,SPRC - Spring Creek National Fish Hatchery,2021,2020,11188509,14979,Chinook,Fall,SPRC,TULE
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2022,2020,257953,3424,Chinook,Spring,WSPH,
+ROBU - Round Butte Hatchery,PELTON - Pelton Ladder (Deschutes River) Acclimation Pond,2022,2020,328378,14662,Chinook,Spring,ROBU,Round Butte Stock
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2022,2020,1380578,14860,Chinook,Spring,LWSH,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2022,2020,1162997,14986,Chinook,Spring,CARS,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2022,2021,4435427,15234,Chinook,Fall,LWSH,URB
+SPRC - Spring Creek National Fish Hatchery,SPRC - Spring Creek National Fish Hatchery,2022,2021,10576764,10394,Chinook,Fall,SPRC,TULE
+WILL - Willard National Fish Hatchery,WILL - Willard National Fish Hatchery,2022,2021,525471,7497,Chinook,Fall,WILL,URB
+WILL - Willard National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2022,2021,1466290,7413,Chinook,Fall,WILL,URB
+WSPH - Warm Springs National Fish Hatchery,WSPH - Warm Springs National Fish Hatchery,2023,2021,149325,14975,Chinook,Spring,WSPH,
+CARS - Carson National Fish Hatchery,CARS - Carson National Fish Hatchery,2023,2021,1494123,14082,Chinook,Spring,CARS,
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2023,2021,1497692,14969,Chinook,Spring,LWSH,
+ROBU - Round Butte Hatchery,PELTON - Pelton Ladder (Deschutes River) Acclimation Pond,2023,2021,281194,14823,Chinook,Spring,ROBU,Round Butte Stock
+WILL - Willard National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2023,2022,1898904,14986,Chinook,Fall,WILL,URB
+LWSH - Little White Salmon National Fish Hatchery,LWSH - Little White Salmon National Fish Hatchery,2023,2022,4395750,14858,Chinook,Fall,LWSH,URB
+SPRC - Spring Creek National Fish Hatchery,SPRC - Spring Creek National Fish Hatchery,2023,2022,9678312,14962,Chinook,Fall,SPRC,TULE
