@@ -8,6 +8,7 @@
 #
 
 library(shiny)
+library(dplyr)
 source("./global.R")
 
 function (input,output){
@@ -19,6 +20,30 @@ output$histWS <- renderPlot({
   x <- barplot(dta,las = 2,beside = FALSE,col = col, xaxt = "n", ylim = c(0,40))
   text(cex=1, x=x-.8, y=-5.25, colnames(dta), xpd=TRUE, srt=45)
   legend("topright",sprintf("Age-%s",0:4),fill = col[1:5],bty = "n")
+})
+
+output$expansionWS <- renderTable({
+  filteredWS <- df %>% 
+    filter(`Last Observation Year` == input$histyear) %>% 
+    ungroup() %>% 
+    select(5, 8, 12, 9, 10, 11, 13, 14, 18, 19) %>% 
+    arrange(Age, Stock) 
+  
+  # Convert `Brood Year` column to character type
+  filteredWS <- filteredWS %>% mutate(`Brood Year` = as.character(`Brood Year`))
+  
+  # Calculate the sum for columns 7 and 8
+  summary_row <- filteredWS %>% 
+    summarise(across(c(7, 8), sum, na.rm = TRUE))
+  
+  # Add an identifier for the summary row
+  summary_row <- summary_row %>%
+    mutate(`Brood Year` = "Total", Stock = "")
+  
+  # Bind the summary row to the filtered data
+  resultWS <- bind_rows(filteredWS, summary_row)
+  
+  return(resultWS)
 })
 
 }
