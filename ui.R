@@ -12,7 +12,8 @@ fluidPage(theme = shinytheme("cerulean"),
                 width = 2
                 )
             ),
-            mainPanel(plotOutput("histWS"))
+            mainPanel(plotOutput("histWS"),
+                      tableOutput("expansionWS"))
         ),
         tabPanel("Next Hatchery"),
         tabPanel("Next Hatchery"),
