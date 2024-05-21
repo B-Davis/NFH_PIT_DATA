@@ -5,7 +5,7 @@ Shiny web application for up-to-date fish movement data
 
 **Brian** - Deleted some code and files 05/16/2024
 
-**Brook** - 05/21/2024 Adding Expanded returns table to server and ui files
+**Brook** - 05/21/2024 Added Expanded returns table to server and ui files
 
 How to use this tool:
 Warm Springs NFH annual detections at Bonneville Dam
