@@ -8,7 +8,7 @@
 # WS_Bonn_Ladders currently runs every morning at 07:30 am
 # A list of query parameters for WS_Bonn_Ladders.csv can be found "NFH_PIT_DATA\PTAGIS\WS_Bonn_Ladders_Attributes.html"
 
-# rm(list = ls())
+rm(list = ls())
 ###########
 ### Data ###
 ############
@@ -46,6 +46,7 @@ d <- d[order(d$Last.Time, decreasing = TRUE),]
 d <- d[-which(duplicated(d[,c("Tag","ObsYear")])),]
 d <- d[order(d$Last.Time, decreasing = FALSE),] # reorder firt time observed -> last
 # Age variable (observation year - release year)
+d$yrsSeen <- with(d, ObsYear - RelYear)
 d$Age <- with(d, ObsYear - Brood.Year)
 d$DOY <- as.integer(format(d$Last.Time,"%j")) # Day of Year
 # Another observation date variable, but all same year for plotting purposes (derived from day-of-year)
@@ -136,7 +137,7 @@ nmsAge <- as.character(0:4)
 nmsYear <- as.character(unique(d$ObsYear))
 A_hist <- array(0,dim = c(5,length(brks)-1,length(unique(d$ObsYear))),dimnames = list(nmsAge,brksNms,nmsYear))
 for(j in nmsYear){
-tmp <- d[d$ObsYear == j,c("Age","Dts_sameyear")]
+tmp <- d[d$ObsYear == j,c("yrsSeen","Dts_sameyear")]
 tmp2 <- split(tmp[[2]],tmp[[1]])
 for(i in nmsAge){
     tryCatch({
@@ -150,10 +151,13 @@ for(i in nmsAge){
 
 L_cum <- list()
 for(i in seq_along(nmsYear)){
-    tmp <- d[d$ObsYear == nmsYear[i],]
-    L_cum[[nmsYear[i]]] <- cumsum(table(tmp$Dts_sameyear))
+    tmp <- d[d$ObsYear == nmsYear[i],"Dts_sameyear"]
+    L_cum[[nmsYear[i]]] <- cumsum(table(tmp))
 }
 
+# brksday <- seq(DtRng[1],DtRng[2],by = "day")
+
+# a <- lines(as.POSIXct(names(L_cum[["2023"]])),L_cum[["2023"]])
 
 
 tapply(d$Tag, list(d$ObsYear,d$Age),length)

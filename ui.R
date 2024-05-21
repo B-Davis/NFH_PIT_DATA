@@ -9,7 +9,7 @@ fluidPage(theme = shinytheme("cerulean"),
                 tags$h3("Some Title Perhaps"),
                 radioButtons("histyear",label  = "Year",
                 choices = rev(dimnames(A_hist)[[3]]), selected = currYr,
-                width = 1
+                width = 2
                 )
             ),
             mainPanel(plotOutput("histWS"))

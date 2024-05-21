@@ -5,7 +5,7 @@ load("data/WarmSprings/WSdata.Rdata") # Warm Springs plotting data
 
 col <- RColorBrewer::brewer.pal(n = 8, name = "Dark2")[-c(4,5)]
 par(mar = c(7,4,4,2) + .01)
-x <- barplot(A_hist[,,"2023"],las = 2,beside = FALSE,col = col, ylim = c(0,40))
+x <- barplot(A_hist[,,"2015"],las = 2,beside = FALSE,col = col, ylim = c(0,40))
 legend("topright",sprintf("Age-%s",0:4),fill = col[1:5],bty = "n")
 
 ##################
@@ -28,3 +28,7 @@ axis(1,atlbl,lbl); axis(2,y_lbls,las = 2)
 f_cum("2023")
 
 sapply(c("2014","2018","2022"),f_cum)
+
+tmp <- L_cum[["2023"]]
+sapply(seq_along(brks),\(x) brks[x] %in% as.POSIXct(names(tmp)))
+class(as.POSIXct(names(tmp)))
