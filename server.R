@@ -19,7 +19,7 @@ output$histWS <- renderPlot({
   dta <- A_hist[,,input$histyear]
   x <- barplot(dta,las = 2,beside = FALSE,col = col, xaxt = "n", ylim = c(0,40))
   text(cex=1, x=x-.8, y=-5.25, colnames(dta), xpd=TRUE, srt=45)
-  legend("topright",sprintf("Age-%s",0:4),fill = col[1:5],bty = "n")
+  legend("topright",sprintf("Brood Year-%s",currYr-c(0,1,2,3)),fill = col[1:4],bty = "n")
 })
 
 output$expansionWS <- renderTable({
