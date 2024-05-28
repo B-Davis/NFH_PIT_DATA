@@ -20,7 +20,7 @@ tmp <- httr::GET("https://api.ptagis.org/reporting/reports/brook/file/WS_Bonn_La
 bin <- httr::content(tmp, "raw")
 writeBin(bin, "data/WarmSprings/Bonnydownload.csv") # pre massage
 
-# Script to ensure file is downloaded beofore reading in and massaging
+# Script to ensure file is downloaded before reading in and massaging
 # Not sure this is necessary, maybe test later to see if needed
 while(!file.exists("data/WarmSprings/Bonnydownload.csv")){
     Sys.sleep(.1)
