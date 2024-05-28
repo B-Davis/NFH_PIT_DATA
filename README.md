@@ -3,9 +3,9 @@ Shiny web application for up-to-date fish movement data
 
 ## Check-in/out Board
 
-**Brian** - Added a cumalitive plot. Have not yet updated query so still using Brook's for now. 
+**Brian** - Added a cumulative plot. Have not yet updated query so still using Brook's for now. 
 
-**Brook** - 05/21/2024 Added Expanded returns table to server and ui files
+**Brook** - 05/28/2024 Moved data massage of expanded returns from the server file to the massage file. Created a list containing expansions for each year with summary row.
 
 How to use this tool:
 Warm Springs NFH annual detections at Bonneville Dam
