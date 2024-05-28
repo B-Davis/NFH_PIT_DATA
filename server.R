@@ -17,7 +17,8 @@ output$histWS <- renderPlot({
   par(mar = c(4,6,3,1) + .01, oma = c(4,2,1,1), mfrow = c(2,1))
   dta <- A_hist[,,input$histyear]
   yr <- as.integer(input$histyear)
-# Cumalitive
+
+  # Cumulative
 plot.new(); plot.window(range(brksday),c(0,max(y_lbls)))
 axis(1,atlbl,lbl); axis(2,y_lbls,las = 2)
 sapply(TenRg, \(x) lines(brksday,M_cum[,x],col = adjustcolor("grey80",.5),lwd = 4))
@@ -38,53 +39,14 @@ legend("topright",c("Ten year data","Ten year model average",yr),col = c(adjustc
   mtext("Week",1,line = 1,outer = T)
 })
 
+
+
+# Expansion Table
 output$expansionWS <- renderTable({
-  filteredWS <- df %>% 
-    filter(`Last Observation Year` == input$histyear) %>% 
-    ungroup() %>% 
-    select(5, 8, 12, 9, 10, 11, 13, 14, 18, 19) %>% 
-    arrange(Age, Stock) 
-  
-  # Convert `Brood Year` column to character type
-  filteredWS <- filteredWS %>% mutate(`Brood Year` = as.character(`Brood Year`))
-  
-  # Calculate the sum for columns 7 and 8
-  summary_row <- filteredWS %>% 
-    summarise(across(c(7, 8), sum, na.rm = TRUE))
-  
-  # Add an identifier for the summary row
-  summary_row <- summary_row %>%
-    mutate(`Brood Year` = "Total", Stock = "")
-  
-  # Bind the summary row to the filtered data
-  resultWS <- bind_rows(filteredWS, summary_row)
-  
-  return(resultWS)
+  L_ws_expansion[[input$histyear]]
 })
 
-output$expansionWS <- renderTable({
-  filteredWS <- df %>% 
-    filter(`Last Observation Year` == input$histyear) %>% 
-    ungroup() %>% 
-    select(5, 8, 12, 9, 10, 11, 13, 14, 18, 19) %>% 
-    arrange(Age, Stock) 
-  
-  # Convert `Brood Year` column to character type
-  filteredWS <- filteredWS %>% mutate(`Brood Year` = as.character(`Brood Year`))
-  
-  # Calculate the sum for columns 7 and 8
-  summary_row <- filteredWS %>% 
-    summarise(across(c(7, 8), sum, na.rm = TRUE))
-  
-  # Add an identifier for the summary row
-  summary_row <- summary_row %>%
-    mutate(`Brood Year` = "Total", Stock = "")
-  
-  # Bind the summary row to the filtered data
-  resultWS <- bind_rows(filteredWS, summary_row)
-  
-  return(resultWS)
-})
+
 
 }
 
