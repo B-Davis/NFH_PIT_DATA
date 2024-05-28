@@ -5,15 +5,26 @@ fluidPage(theme = shinytheme("cerulean"),
     navbarPage(
         "Title",
         tabPanel("Warm Springs",
-            sidebarPanel(
-                tags$h3("Some Title Perhaps"),
-                radioButtons("histyear",label  = "Year",
-                choices = rev(dimnames(A_hist)[[3]]), selected = currYr,
-                width = 2
-                )
-            ),
-            mainPanel(plotOutput("histWS"),
-                      tableOutput("expansionWS"))
+            fluidRow(
+                column(2,
+                    wellPanel(h3(""),
+                        radioButtons("histyear",label  = "Year",
+                            choices = rev(dimnames(A_hist)[[3]]),
+                            selected = currYr
+                        )
+                    )
+                ),
+                column(10,
+                    tabsetPanel(
+                        tabPanel(title = "Detection Data",
+                                mainPanel(plotOutput("histWS",height = "600px",width = "800px"))
+                        ),
+                        tabPanel(title = "Expansion Data",
+                                tableOutput("expansionWS")
+                        )
+                    )
+                )    
+            )
         ),
         tabPanel("Next Hatchery"),
         tabPanel("Next Hatchery"),
