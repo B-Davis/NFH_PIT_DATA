@@ -3,7 +3,7 @@ Shiny web application for up-to-date fish movement data
 
 ## Check-in/out Board
 
-**Brian** - Deleted some code and files 05/16/2024
+**Brian** - Added a cumalitive plot. Have not yet updated query so still using Brook's for now. 
 
 **Brook** - 05/21/2024 Added Expanded returns table to server and ui files
 
