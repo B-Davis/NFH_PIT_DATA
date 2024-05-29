@@ -53,10 +53,14 @@ output$expansionWS <- renderTable({
   last_row_index <- nrow(output_data)
   
   # Add the word "Total" to the first column of the last row
-  output_data[last_row_index, 1] <- "Total"
+  output_data[last_row_index, ] <- lapply(output_data[last_row_index, ], function(x) {
+    paste0("<b>", x, "</b>")
+  })
   
-  output_data 
-})
+  # Return the processed data frame to be rendered as a table
+  output_data
+  
+}, sanitize.text.function = function(x) x)
 
 
 
