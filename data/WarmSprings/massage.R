@@ -172,7 +172,6 @@ ws_expansion_table <- ws_detection_expansion %>%
   mutate(`Brood Year` = as.character(`Brood Year`)) %>%  # Convert `Brood Year` column to character type 
   ungroup() %>% 
   select(-`Release Site`, -`Run`) %>% 
-  
   split(.$`Last Observation Year`)  
  
 # Create a function to summarize the dataframe for each year
@@ -181,10 +180,12 @@ ws_expansion_table <- ws_detection_expansion %>%
    
    tmp <- rep(NA,ncol(df)) # Create a temporary named vector with NA values
    names(tmp) <- names(df) # Make sure column names match for rbind later
+   tmp[2] <- "Total"
    tmp[8:9] <- apply(df[,8:9],2,sum) # Sum columns 8 and 9 and assign to tmp
    tmp[10:11] <- apply(df[i,10:11],2,sum) # use 'i' (row index) you want to use for summing columns 10 and 11
    ws_result <- rbind(df,tmp) %>% # Append tmp as a new row to the data frame
      select(-1) # Remove the first column, Last Observation Year
+   
  }
 
  # Apply the summary function to each element in the list
