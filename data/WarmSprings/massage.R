@@ -47,9 +47,9 @@ library(dplyr)
 d2 <- read.csv("data/Releases.csv") %>% 
   mutate(Expansion = Released/PIT.Tagged) 
 
-ws_detection_expansion <- left_join(d1,d2, by = c("Mark.Site.Name", "Release.Site.Name", "Brood.Year.YYYY", "Run.Name", "Stock.Name"))
+ws_detection_expansion_raw <- left_join(d1,d2, by = c("Mark.Site.Name", "Release.Site.Name", "Brood.Year.YYYY", "Run.Name", "Stock.Name"))
 
-ws_detection_expansion <- ws_detection_expansion %>% 
+ws_detection_expansion <- ws_detection_expansion_raw %>% 
   distinct(Tag, .keep_all = TRUE) %>% # Make sure there are no duplicates
   group_by(Tag) %>% 
   mutate(Unique.Tags = n(),
@@ -68,14 +68,16 @@ ws_detection_expansion <- ws_detection_expansion %>%
            Stock.Name) %>%
   summarise(Unique.Tags.Detected = sum(Unique.Tags), 
             Est.Over.Bonneville= sum(Est.over.BONN),
-            .groups = "drop")
+            .groups = "drop") %>% 
+  mutate(Expansion = round(Expansion, 1),
+         Est.Over.Bonneville = round(Est.Over.Bonneville, 0))
 
 # Calculate 95% Confidence Intervals using the binomial distribution
 ci <- as.data.frame(DescTools::BinomCI(ws_detection_expansion$Unique.Tags.Detected, ws_detection_expansion$Est.Over.Bonneville, conf.level = 0.95,  method = "clopper-pearson"))
 
 ws_detection_expansion <- bind_cols(ws_detection_expansion,ci) 
-ws_detection_expansion$LowerCI <- ws_detection_expansion$Unique.Tags.Detected/ws_detection_expansion$upr.ci
-ws_detection_expansion$UpperCI <- ws_detection_expansion$Unique.Tags.Detected/ws_detection_expansion$lwr.ci
+ws_detection_expansion$LowerCI <- round(ws_detection_expansion$Unique.Tags.Detected/ws_detection_expansion$upr.ci, 0)
+ws_detection_expansion$UpperCI <- round(ws_detection_expansion$Unique.Tags.Detected/ws_detection_expansion$lwr.ci, 0)
   
 ws_detection_expansion <- ws_detection_expansion %>% ## Arrange by run and age, rename fields to aid reading table
   group_by(Release.Site.Name, Run.Name) %>% 
@@ -163,31 +165,30 @@ L_Plot_cum <- list("brksday" = brksday,"atlbl" = atlbl,"lbl" = lbl,"y_lbls" = y_
 # tapply(d$Tag, list(d$ObsYear,d$Age),length)
 
 
-### Expansion Table ###
-ws_table <- ws_detection_expansion %>% 
-  select(3, 4, 5, 8, 12, 9, 10, 11, 13, 14, 18, 19) %>% 
+### List of Expansion Tables by Year ###
+ws_expansion_table <- ws_detection_expansion %>% 
+  select(1, 3, 4, 5, 8, 12, 9, 10, 11, 13, 14, 18, 19) %>% 
   arrange(Age, Stock) %>% 
-  mutate(`Brood Year` = as.character(`Brood Year`)) # Convert `Brood Year` column to character type
+  mutate(`Brood Year` = as.character(`Brood Year`)) %>%  # Convert `Brood Year` column to character type 
+  ungroup() %>% 
+  select(-`Release Site`, -`Run`) %>% 
+  
+  split(.$`Last Observation Year`)  
  
- L_ws_expansion <- split(ws_table, ws_detection_expansion$`Last Observation Year`) # Split the dataframe by last observation year
- 
- # Create a function to summarize the datframe for each year
+# Create a function to summarize the dataframe for each year
  f_summarize_year <- function(df) {
-   summary_row <- df %>% # Calculate the sum for columns 9 and 10 (Unique tags detected and expansion)
-    summarise(across(c(9, 10), sum, na.rm = TRUE),
-              .groups = "drop")
-  
-  # Add an identifier for the summary row
-  summary_row <- summary_row %>%
-    mutate(`Brood Year` = "Total", Stock = "")
-  
-  # Bind the summary row to the filtered data
-  resultWS <- bind_rows(df, summary_row)
+   i <- which(df$`Unique Tags Detected` >= 5) # Find indices where `Unique Tags Detected` >= 5
+   
+   tmp <- rep(NA,ncol(df)) # Create a temporary named vector with NA values
+   names(tmp) <- names(df) # Make sure column names match for rbind later
+   tmp[8:9] <- apply(df[,8:9],2,sum) # Sum columns 8 and 9 and assign to tmp
+   tmp[10:11] <- apply(df[i,10:11],2,sum) # use 'i' (row index) you want to use for summing columns 10 and 11
+   ws_result <- rbind(df,tmp) %>% # Append tmp as a new row to the data frame
+     select(-1) # Remove the first column, Last Observation Year
  }
 
  # Apply the summary function to each element in the list
- L_ws_expansion <- lapply(L_ws_expansion, f_summarize_year) 
-
+ L_ws_expansion <- lapply(ws_expansion_table, f_summarize_year) 
 
 save("M_cum","A_hist","DtRng","currYr", "currWk","currday","L_ws_expansion", "L_Plot_cum","fit","f_cum",file = "data/WarmSprings/WSdata.Rdata")
 rm(list = ls())
