@@ -40,10 +40,22 @@ legend("topright",c("Ten year data","Ten year model average",yr),col = c(adjustc
 })
 
 
-
 # Expansion Table
 output$expansionWS <- renderTable({
-  L_ws_expansion[[input$histyear]]
+  
+  output_data <- L_ws_expansion[[input$histyear]] %>%
+    mutate_at(c(2, 4, 5, 7, 8, 9, 10), as.integer) %>%
+    mutate(across(c(4, 5, 7:10), ~format(., big.mark = ","))) %>% 
+    mutate(across(everything(), ~replace(., is.na(.), ""))) %>% 
+    mutate_at(c(4, 5), ~gsub("NA", "", .))
+
+  # Determine the index of the last row
+  last_row_index <- nrow(output_data)
+  
+  # Add the word "Total" to the first column of the last row
+  output_data[last_row_index, 1] <- "Total"
+  
+  output_data 
 })
 
 
