@@ -9,6 +9,7 @@
 
 # library(shiny)
 library(dplyr)
+library(ggplot2)
 
 function (input,output){
 
@@ -41,26 +42,50 @@ legend("topright",c("Ten year data","Ten year model average",yr),col = c(adjustc
 
 
 # Expansion Table
-output$expansionWS <- renderTable({
-  
-  output_data <- L_ws_expansion[[input$histyear]] %>%
-    mutate_at(c(2, 4, 5, 7, 8, 9, 10), as.integer) %>%
-    mutate(across(c(4, 5, 7:10), ~format(., big.mark = ","))) %>% 
-    mutate(across(everything(), ~replace(., is.na(.), ""))) %>% 
-    mutate_at(c(4, 5), ~gsub("NA", "", .))
-
+output$T_expansion <- renderTable({
+  df_expansion_table <- L_T_expansion[[input$histyear]] 
+  # Determine the index of rows that have more than 5 detections
+  ci_row_index <- as.numeric(df_expansion_table[[7]]) < 5
   # Determine the index of the last row
-  last_row_index <- nrow(output_data)
+  last_row_index <- nrow(df_expansion_table)
   
-  # Add the word "Total" to the first column of the last row
-  output_data[last_row_index, ] <- lapply(output_data[last_row_index, ], function(x) {
-    paste0("<b>", x, "</b>")
-  })
+  #Create formatted table
+  df_expansion_table  %>%
+    mutate_at(c(2, 4, 5, 7, 8, 9, 10), as.integer) %>%
+    mutate(across(c(4, 5, 7:10), ~format(., big.mark = ","))) 
   
-  # Return the processed data frame to be rendered as a table
-  output_data
+  # Create a function to make the last row bold
+  df_expansion_table[last_row_index, ] <- lapply(df_expansion_table[last_row_index, ], function(x) {
+    x[is.na(x)] <- ""  # Replace NA with empty string
+    paste0("<span style='font-weight:bold; color:black;'>", x, "</span>")})
+  
+  # Create a function to make CI generated form less than 5 unique detections tan
+  df_expansion_table[ci_row_index, c(9, 10)] <- lapply(df_expansion_table[ci_row_index, c(9, 10)], function(x) {
+    paste0("<span style='color:tan;'>", x, "</span>") })
+  
+   # Return the processed data frame to be rendered as a table
+  df_expansion_table
   
 }, sanitize.text.function = function(x) x)
+
+# Weekly Expansion Plot ## 
+output$P_expansion <- renderPlot({
+  par(mar = c(4,6,3,1) + .01, oma = c(4,2,1,1), mfrow = c(2,1))
+  
+  # Subset L_P_expansion based on the selected histyear
+  df_expansion_plot <- L_P_expansion[[input$histyear]]
+  
+  # Create the plot
+  P_expansion <- ggplot(df_expansion_plot, aes(x = week_start, y = cum_expansion)) +
+    geom_point() +
+    theme_minimal()
+  
+  print(P_expansion)
+})
+
+
+
+
 
 
 
