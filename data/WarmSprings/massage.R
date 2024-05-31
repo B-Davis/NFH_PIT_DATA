@@ -193,15 +193,19 @@ L_expansion <- df_expansion %>%
  ## Expansion Plot ##
   L_P_expansion <- df_expansion_raw %>%
    mutate(
-     week_start = lubridate::floor_date(Dts_sameyear, "week", week_start = 2), #Begin the week on Tuesday ("2")
-     week_end = lubridate::floor_date(Dts_sameyear, "week", week_start = 2) + lubridate::days(6)) %>% # Adjust to get end of the week
+     week_start = lubridate::floor_date(Dts_sameyear, "week", week_start = 5), #Begin the week on Tuesday ("2")
+     week_end = lubridate::floor_date(Dts_sameyear, "week", week_start = 5) + lubridate::days(6)) %>% # Adjust to get end of the week
    select(ObsYear, week_start, Expansion) %>% 
    group_by(ObsYear, week_start) %>% 
    summarize(sum_expansion = sum(Expansion), .groups = "drop") %>% # Sum the expansion each week and ungroup for annual cumulative expansion total
    group_by(ObsYear) %>% 
    mutate(cum_expansion = cumsum(sum_expansion)) %>% 
     split(.$ObsYear)  
+ 
+## Weekly Change Table ## 
   
+  
+  # Bin observations into weekly bins
 
  
 
