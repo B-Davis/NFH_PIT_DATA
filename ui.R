@@ -5,8 +5,8 @@ fluidPage(theme = shinytheme("cerulean"),
     navbarPage(
         "Title",
         tabPanel("Warm Springs",
-            fluidRow(
-                column(2,
+            fluidRow(     # Row 1
+                column(2, # Column 1
                     wellPanel(h3(""),
                         radioButtons("histyear",label  = "Year",
                             choices = rev(dimnames(A_hist)[[3]]),
@@ -14,7 +14,7 @@ fluidPage(theme = shinytheme("cerulean"),
                         )
                     )
                 ),
-                column(10,
+                column(10, # Column 2 
                     tabsetPanel(
                         tabPanel(title = "Detection Data",
                                 mainPanel(plotOutput("histWS",height = "600px",width = "800px"))

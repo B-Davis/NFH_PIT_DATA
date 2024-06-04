@@ -26,7 +26,8 @@ f_cum(input$histyear, lwd = 3, lty = 2)
 axis(1,currday,"", col = adjustcolor("red",.3),line = 0,lwd = 1.5,tck = -.15,lty = 3)
 text(currday,-60,"Today",col = adjustcolor("red",.3),xpd = NA)
 title(main = paste0("Bonneville Dam Detections\n",yr),ylab = "Cumalitive Count")
-legend("topright",c("Ten year data","Ten year model average",yr),col = c(adjustcolor(c("grey80","red"),.5),1),lty = c(1,1,3),lwd = c(4,4,3),bty = "n",box.lty = 2)
+legend("topright",c("Ten year data","Ten year model average",yr),col = c(adjustcolor(c("grey80","red"),.5),1),lty = c(1,1,2),lwd = c(4,4,3),bty = "n",box.lty = 2)
+
 
 # Histogram  
   # par(mar = c(7,4,4,2) + .01)

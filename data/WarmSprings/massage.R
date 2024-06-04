@@ -165,4 +165,48 @@ L_Plot_cum <- list("brksday" = brksday,"atlbl" = atlbl,"lbl" = lbl,"y_lbls" = y_
 save("M_cum","A_hist","DtRng","currYr", "currWk","currday","df", "L_Plot_cum","fit","f_cum",file = "data/WarmSprings/WSdata.Rdata")
 rm(list = ls())
 # load("data/WarmSprings/WSdata.Rdata")
+
+WS <- new.env()
+load("data/WarmSprings/WSdata.Rdata",env = WS)
+
 ls()
+
+WS$A_hist
+
+tmp <- data.frame(x = 10:1,y = 1:10)
+attach(tmp)
+
+tmp$x
+
+ls(env = WS)
+WS$A_hist
+WS$f_cum()
+
+WS
+
+ls()
+search()
+
+ls(3)
+
+
+attach("data/WarmSprings/WSdata.Rdata")
+detach("file:data/WarmSprings/WSdata.Rdata")
+
+ls()
+
+WSdata::A_hist
+names(ls(2))
+
+
+# e = local({load("foo.RData"); environment()})
+
+
+
+lapply(A_hist,\(x) apply(x,2,sum))
+
+head(d)
+
+
+
+
