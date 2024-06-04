@@ -9,6 +9,7 @@
 
 # library(shiny)
 library(dplyr)
+library(ggplot2)
 
 function (input,output){
 
@@ -17,7 +18,8 @@ output$histWS <- renderPlot({
   par(mar = c(4,6,3,1) + .01, oma = c(4,2,1,1), mfrow = c(2,1))
   dta <- A_hist[,,input$histyear]
   yr <- as.integer(input$histyear)
-# Cumalitive
+
+  # Cumulative
 plot.new(); plot.window(range(brksday),c(0,max(y_lbls)))
 axis(1,atlbl,lbl); axis(2,y_lbls,las = 2)
 sapply(TenRg, \(x) lines(brksday,M_cum[,x],col = adjustcolor("grey80",.5),lwd = 4))
@@ -39,53 +41,54 @@ legend("topright",c("Ten year data","Ten year model average",yr),col = c(adjustc
   mtext("Week",1,line = 1,outer = T)
 })
 
-output$expansionWS <- renderTable({
-  filteredWS <- df %>% 
-    filter(`Last Observation Year` == input$histyear) %>% 
-    ungroup() %>% 
-    select(5, 8, 12, 9, 10, 11, 13, 14, 18, 19) %>% 
-    arrange(Age, Stock) 
+
+# Expansion Table
+output$T_expansion <- renderTable({
+  df_expansion_table <- L_T_expansion[[input$histyear]] 
+  # Determine the index of rows that have more than 5 detections
+  ci_row_index <- as.numeric(df_expansion_table[[7]]) < 5
+  # Determine the index of the last row
+  last_row_index <- nrow(df_expansion_table)
   
-  # Convert `Brood Year` column to character type
-  filteredWS <- filteredWS %>% mutate(`Brood Year` = as.character(`Brood Year`))
+  #Create formatted table
+  df_expansion_table  %>%
+    mutate_at(c(2, 4, 5, 7, 8, 9, 10), as.integer) %>%
+    mutate(across(c(4, 5, 7:10), ~format(., big.mark = ","))) 
   
-  # Calculate the sum for columns 7 and 8
-  summary_row <- filteredWS %>% 
-    summarise(across(c(7, 8), sum, na.rm = TRUE))
+  # Create a function to make the last row bold
+  df_expansion_table[last_row_index, ] <- lapply(df_expansion_table[last_row_index, ], function(x) {
+    x[is.na(x)] <- ""  # Replace NA with empty string
+    paste0("<span style='font-weight:bold; color:black;'>", x, "</span>")})
   
-  # Add an identifier for the summary row
-  summary_row <- summary_row %>%
-    mutate(`Brood Year` = "Total", Stock = "")
+  # Create a function to make CI generated form less than 5 unique detections tan
+  df_expansion_table[ci_row_index, c(9, 10)] <- lapply(df_expansion_table[ci_row_index, c(9, 10)], function(x) {
+    paste0("<span style='color:tan;'>", x, "</span>") })
   
-  # Bind the summary row to the filtered data
-  resultWS <- bind_rows(filteredWS, summary_row)
+   # Return the processed data frame to be rendered as a table
+  df_expansion_table
   
-  return(resultWS)
+}, sanitize.text.function = function(x) x)
+
+# Weekly Expansion Plot ## 
+output$P_expansion <- renderPlot({
+  par(mar = c(4,6,3,1) + .01, oma = c(4,2,1,1), mfrow = c(2,1))
+  
+  # Subset L_P_expansion based on the selected histyear
+  df_expansion_plot <- L_P_expansion[[input$histyear]]
+  
+  # Create the plot
+  P_expansion <- ggplot(df_expansion_plot, aes(x = week_start, y = cum_expansion)) +
+    geom_point() +
+    theme_minimal()
+  
+  print(P_expansion)
 })
 
-output$expansionWS <- renderTable({
-  filteredWS <- df %>% 
-    filter(`Last Observation Year` == input$histyear) %>% 
-    ungroup() %>% 
-    select(5, 8, 12, 9, 10, 11, 13, 14, 18, 19) %>% 
-    arrange(Age, Stock) 
-  
-  # Convert `Brood Year` column to character type
-  filteredWS <- filteredWS %>% mutate(`Brood Year` = as.character(`Brood Year`))
-  
-  # Calculate the sum for columns 7 and 8
-  summary_row <- filteredWS %>% 
-    summarise(across(c(7, 8), sum, na.rm = TRUE))
-  
-  # Add an identifier for the summary row
-  summary_row <- summary_row %>%
-    mutate(`Brood Year` = "Total", Stock = "")
-  
-  # Bind the summary row to the filtered data
-  resultWS <- bind_rows(filteredWS, summary_row)
-  
-  return(resultWS)
-})
+
+
+
+
+
 
 }
 

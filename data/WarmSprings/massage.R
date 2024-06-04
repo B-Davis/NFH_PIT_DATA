@@ -11,8 +11,8 @@ d$Release.Date <- as.POSIXct(d$Release.Date, format = "%m/%d/%Y")
 d$Last.Time <- as.POSIXct(d$Last.Time, format = "%m/%d/%Y %H:%M:%S ")
 d$ObsYear <- as.integer(format(d$Last.Time,"%Y"))
 d$RelYear <- as.integer(format(d$Release.Date,"%Y"))
-# unique(d$RelYear) # Ask Brook about 2069??? I knew once, but forgot
-d <- d[-which(d$RelYear == 2069),] # remove records for now
+# unique(d$RelYear) 
+d <- d[-which(d$RelYear == 2069),] # remove records from release year 2069. There were several years of volitional releases in the fall and PTAGIS recommended coding with this year to filter. 
 # Remove duplicate tags (same tag, different antennas); keeping most recent Bonneville observation
 d <- d[order(d$Last.Time, decreasing = TRUE),]
 d <- d[-which(duplicated(d[,c("Tag","ObsYear")])),]
@@ -32,7 +32,7 @@ head(d)
 
 ## Format Stock Names to join with Releases csv
 library(dplyr)
-  d1 <- d %>% 
+  df_1 <- d %>% 
   mutate(Stock.Name = case_when(
     Stock == "WARM SPRINGS" ~ "WSPH",
     Stock == "ROUND BUTTE" ~ "ROBU",
@@ -44,12 +44,12 @@ library(dplyr)
     "Release.Site.Name" = "Release.Site")
 
 ## Import Releases file and join with d
-d2 <- read.csv("data/Releases.csv") %>% 
+df_2 <- read.csv("data/Releases.csv") %>% 
   mutate(Expansion = Released/PIT.Tagged) 
 
-df <- left_join(d1,d2, by = c("Mark.Site.Name", "Release.Site.Name", "Brood.Year.YYYY", "Run.Name", "Stock.Name"))
+df_expansion_raw <- left_join(df_1,df_2, by = c("Mark.Site.Name", "Release.Site.Name", "Brood.Year.YYYY", "Run.Name", "Stock.Name"))
 
-df <- df %>% 
+df_expansion_summary <- df_expansion_raw %>% 
   distinct(Tag, .keep_all = TRUE) %>% # Make sure there are no duplicates
   group_by(Tag) %>% 
   mutate(Unique.Tags = n(),
@@ -66,17 +66,20 @@ df <- df %>%
            Released, 
            Expansion, 
            Stock.Name) %>%
-  summarise(Unique.Tags.Detected = sum(Unique.Tags) , Est.Over.Bonneville= sum(Est.over.BONN)) %>% 
-  ungroup() 
+  summarise(Unique.Tags.Detected = sum(Unique.Tags), 
+            Est.Over.Bonneville= sum(Est.over.BONN),
+            .groups = "drop") %>% 
+  mutate(Expansion = round(Expansion, 1),
+         Est.Over.Bonneville = round(Est.Over.Bonneville, 0))
 
 # Calculate 95% Confidence Intervals using the binomial distribution
-ci <- as.data.frame(DescTools::BinomCI(df$Unique.Tags.Detected, df$Est.Over.Bonneville, conf.level = 0.95,  method = "clopper-pearson"))
+df_ci <- as.data.frame(DescTools::BinomCI(df_expansion_summary$Unique.Tags.Detected, df_expansion_summary$Est.Over.Bonneville, conf.level = 0.95,  method = "clopper-pearson"))
 
-df <- bind_cols(df,ci) 
-df$LowerCI <- df$Unique.Tags.Detected/df$upr.ci
-df$UpperCI <- df$Unique.Tags.Detected/df$lwr.ci
+df_expansion_summary <- bind_cols(df_expansion_summary,df_ci) 
+df_expansion_summary$LowerCI <- round(df_expansion_summary$Unique.Tags.Detected/df_expansion_summary$upr.ci, 0)
+df_expansion_summary$UpperCI <- round(df_expansion_summary$Unique.Tags.Detected/df_expansion_summary$lwr.ci, 0)
   
-df <- df %>% ## Arrange by run and age, rename fields to aid reading table
+df_expansion <- df_expansion_summary %>% ## Arrange by run and age, rename fields to aid reading table
   group_by(Release.Site.Name, Run.Name) %>% 
   rename("Last Observation Year" = ObsYear,
          "Hatchery" = Mark.Site.Name,
@@ -124,8 +127,7 @@ currday <- Sys.Date() |> as.POSIXct()
 currWk <- which(tmp)
 
 
-
-### Cumalitive ###
+### Cumulative ###
 # Matrix
 brksday <- seq(DtRng[1],DtRng[2],by = "day") ###
 f <- \(x) d[d$ObsYear == x,"Dts_sameyear"] |> cut(breaks = brksday) |> table() |> cumsum()
@@ -162,7 +164,52 @@ L_Plot_cum <- list("brksday" = brksday,"atlbl" = atlbl,"lbl" = lbl,"y_lbls" = y_
 
 # tapply(d$Tag, list(d$ObsYear,d$Age),length)
 
-save("M_cum","A_hist","DtRng","currYr", "currWk","currday","df", "L_Plot_cum","fit","f_cum",file = "data/WarmSprings/WSdata.Rdata")
+
+### List of Expansion Tables by Year ###
+L_expansion <- df_expansion %>% 
+  select(1, 3, 4, 5, 8, 12, 9, 10, 11, 13, 14, 18, 19) %>% 
+  arrange(Age, Stock) %>% 
+  mutate(`Brood Year` = as.character(`Brood Year`)) %>%  # Convert `Brood Year` column to character type 
+  ungroup() %>% 
+  select(-`Release Site`, -`Run`) %>% 
+  split(.$`Last Observation Year`)  
+ 
+# Create a function to summarize the dataframe for each year
+ f_summarize_year <- function(df) {
+   i <- which(df$`Unique Tags Detected` >= 5) # Find indices where `Unique Tags Detected` >= 5
+   tmp <- rep(NA,ncol(df)) # Create a temporary named vector with NA values
+   names(tmp) <- names(df) # Make sure column names match for rbind later
+   tmp[2] <- "Total"
+   tmp[8:9] <- apply(df[,8:9],2,sum) # Sum columns 8 and 9 and assign to tmp
+   tmp[10:11] <- apply(df[i,10:11],2,sum) # use 'i' (row index) you want to use for summing columns 10 and 11
+   ws_result <- rbind(df,tmp) %>% # Append tmp as a new row to the data frame
+   select(-1) # Remove the first column, Last Observation Year
+    }
+
+ # Apply the summary function to each element in the list to create table for output
+ L_T_expansion <- lapply(L_expansion, f_summarize_year) 
+ 
+ 
+ ## Expansion Plot ##
+  L_P_expansion <- df_expansion_raw %>%
+   mutate(
+     week_start = lubridate::floor_date(Dts_sameyear, "week", week_start = 5), #Begin the week on Tuesday ("2")
+     week_end = lubridate::floor_date(Dts_sameyear, "week", week_start = 5) + lubridate::days(6)) %>% # Adjust to get end of the week
+   select(ObsYear, week_start, Expansion) %>% 
+   group_by(ObsYear, week_start) %>% 
+   summarize(sum_expansion = sum(Expansion), .groups = "drop") %>% # Sum the expansion each week and ungroup for annual cumulative expansion total
+   group_by(ObsYear) %>% 
+   mutate(cum_expansion = cumsum(sum_expansion)) %>% 
+    split(.$ObsYear)  
+ 
+## Weekly Change Table ## 
+  
+  
+  # Bin observations into weekly bins
+
+ 
+
+save("M_cum","A_hist","DtRng","currYr", "currWk","currday","L_T_expansion", "L_P_expansion", "L_Plot_cum","fit","f_cum",file = "data/WarmSprings/WSdata.Rdata")
 rm(list = ls())
 # load("data/WarmSprings/WSdata.Rdata")
 

@@ -20,7 +20,8 @@ fluidPage(theme = shinytheme("cerulean"),
                                 mainPanel(plotOutput("histWS",height = "600px",width = "800px"))
                         ),
                         tabPanel(title = "Expansion Data",
-                                tableOutput("expansionWS")
+                                tableOutput("T_expansion"),
+                                plotOutput("P_expansion",height = "600px",width = "800px")
                         )
                     )
                 )    
