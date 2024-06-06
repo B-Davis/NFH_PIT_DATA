@@ -7,12 +7,14 @@ Shiny web application for up-to-date fish movement data
 
 **Brook** - 05/31/2024 Added ideas on naming convention
 
-* Uses for this tool:
-  + Annual detections of adult returns at Bonneville Dam for each hatchery
-  + Previous annual detections
-  + cumulative detections
-  + 10-year model
+* Ideas for this tool:
+  + Annual detections of adult returns at Bonneville Dam for each hatchery, updated button information
+  + Table with annual detections by brood year, fist, last, median detection
+  + cumulative detections, 10-year model, % return as of today based on 10-year model
+  + Annual Expansion, weekly change, plot
   + Ladder detections
+  + Links to annual reports
+  + Temperature tool for Warm Springs
   + juvenile travel time
   + juvenile survival to Bonneville
   + SAS for each brood year
@@ -57,6 +59,7 @@ use meaningful names for variables that explain what they do or what data they h
 * P_   Plot
 * L_ List
 * f_  function 
+
 If files need to be run in order, prefix with numbers
 
 # Brian's discussion notes for Tue 05/06/24 meting
