@@ -204,10 +204,80 @@ L_expansion <- df_expansion %>%
  
 ## Weekly Change Table ## 
   
+  # Define the range of interest (March 1 to August 30)
+  start_month_day <- "03-01"
+  end_month_day <- "08-30"
   
-  # Bin observations into weekly bins
+  # Function to get the custom week start based on March 1
+  custom_week_start <- function(Last.Time) {
+    year <- lubridate::year(Last.Time)
+    start_date <- as.POSIXct(paste0(year, "-", start_month_day))
+    end_date <- as.POSIXct(paste0(year, "-", end_month_day))
+    
+    if (Last.Time >= start_date & Last.Time <= end_date) {
+      custom_week <- lubridate::floor_date(Last.Time, unit = "week")
+      return(format(custom_week, "%Y-%m-%d"))
+    } else {
+      custom_week <- lubridate::floor_date(Last.Time, unit = "week")
+      return(format(custom_week, "%Y-%m-%d"))
+    }
+  }
 
- 
+ # Create weekly bins
+df_expansion_weekly <- df_expansion_raw %>%
+  mutate(
+    custom_week = sapply(Last.Time, custom_week_start),
+    ObsYear = lubridate::year(Last.Time)
+  ) 
+
+# Summarize data by year and custom week
+weekly_summary <- df_expansion_weekly %>%
+  group_by(ObsYear, custom_week) %>%
+  summarise(weekly_expansion = sum(Expansion, na.rm = TRUE),
+    .groups = 'drop') %>% 
+  group_by(ObsYear) %>% 
+  mutate(cum_weekly_expansion = cumsum(weekly_expansion))
+
+# Create a complete sequence of custom weeks for each year from March 1 to August 30
+generate_complete_weeks <- function(year) {
+  start_date <- as.POSIXct(paste0(year, "-", start_month_day))
+  end_date <- as.POSIXct(paste0(year, "-", end_month_day))
+  weeks <- seq(from = start_date, to = end_date, by = "week")
+  data.frame(ObsYear = year, custom_week = weeks)
+}
+
+# Generate complete weeks for all unique years in the data
+complete_weeks <- unique(df_expansion_weekly$ObsYear) %>%
+  lapply(generate_complete_weeks) %>%
+  bind_rows()
+
+
+# Join the summarized data with the complete sequence of custom weeks
+complete_weekly_summary <- complete_weeks %>%
+  left_join(weekly_summary, by = c("ObsYear", "custom_week")) %>%
+  tidyr::replace_na(list(weekly_expansion = 0))
+
+# Calculate week-over-week changes within each year
+complete_weekly_summary <- complete_weekly_summary %>%
+  group_by(ObsYear) %>%
+  arrange(custom_week) %>%
+  mutate(
+    weekly_expansion_change = weekly_expansion - lag(weekly_expansion, 1)
+  ) %>%
+  ungroup()
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 save("M_cum","A_hist","DtRng","currYr", "currWk","currday","L_T_expansion", "L_P_expansion", "L_Plot_cum","fit","f_cum",file = "data/WarmSprings/WSdata.Rdata")
 rm(list = ls())
