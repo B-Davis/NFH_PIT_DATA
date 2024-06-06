@@ -9,8 +9,8 @@ fluidPage(theme = shinytheme("cerulean"),
                 column(2, # Column 1
                     wellPanel(h3(""),
                         radioButtons("histyear",label  = "Year",
-                            choices = rev(dimnames(A_hist)[[3]]),
-                            selected = currYr
+                            choices = rev(dimnames(WS$A_hist)[[3]]),
+                            selected = WS$currYr
                         )
                     )
                 ),

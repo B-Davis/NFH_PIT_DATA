@@ -146,7 +146,7 @@ tmp <- max(M_cum,na.rm = TRUE); tmp <- 220
 y_lbls <- pretty(c(0,tmp),n = 10) ###
 TenRg <- as.character((currYr - 10):(currYr - 1)) # previous ten years ###
 # plot f()
-f_cum <- \(yr,...) lines(brksday,M_cum[,yr],...) ###
+f_cum <- \(yr,...) lines(WS$brksday,WS$M_cum[,yr],...) ###
 # Ten Year Average
 tmp <- as.vector(M_cum)
 tmp2 <- rep(brksday,ncol(M_cum))
@@ -160,7 +160,6 @@ x <- sort(unique(TenDta$x[Ten_i])) # x for running model
 xx <- sort(unique(TenDta$x)) # x for plotting ###
 fit <- nls(y ~ SSlogis(x, Asym, xmid, scal), data = TenDta[Ten_i,]) ###
 
-L_Plot_cum <- list("brksday" = brksday,"atlbl" = atlbl,"lbl" = lbl,"y_lbls" = y_lbls,"TenRg" = TenRg,"xx" = xx,"TenRg"=TenRg)
 
 # tapply(d$Tag, list(d$ObsYear,d$Age),length)
 
@@ -207,53 +206,11 @@ L_expansion <- df_expansion %>%
   
   # Bin observations into weekly bins
 
- 
+####################
+### Save Objects ###
+####################
 
-save("M_cum","A_hist","DtRng","currYr", "currWk","currday","L_T_expansion", "L_P_expansion", "L_Plot_cum","fit","f_cum",file = "data/WarmSprings/WSdata.Rdata")
+# L_Plot_cum <- list("brksday" = brksday,"atlbl" = atlbl,"lbl" = lbl,"y_lbls" = y_lbls,"TenRg" = TenRg,"xx" = xx)
+save("M_cum","A_hist","DtRng","currYr", "currWk","currday","L_T_expansion",
+"L_P_expansion","fit","f_cum","brksday","atlbl","lbl","y_lbls","TenRg","xx",file = "data/WarmSprings/WSdata.Rdata")
 rm(list = ls())
-# load("data/WarmSprings/WSdata.Rdata")
-
-WS <- new.env()
-load("data/WarmSprings/WSdata.Rdata",env = WS)
-
-ls()
-
-WS$A_hist
-
-tmp <- data.frame(x = 10:1,y = 1:10)
-attach(tmp)
-
-tmp$x
-
-ls(env = WS)
-WS$A_hist
-WS$f_cum()
-
-WS
-
-ls()
-search()
-
-ls(3)
-
-
-attach("data/WarmSprings/WSdata.Rdata")
-detach("file:data/WarmSprings/WSdata.Rdata")
-
-ls()
-
-WSdata::A_hist
-names(ls(2))
-
-
-# e = local({load("foo.RData"); environment()})
-
-
-
-lapply(A_hist,\(x) apply(x,2,sum))
-
-head(d)
-
-
-
-
