@@ -276,13 +276,10 @@ complete_weekly_summary <- complete_weekly_summary %>%
 
 
 
-
-<<<<<<< HEAD
-=======
 ####################
 ### Save Objects ###
 ####################
->>>>>>> b35c68baae69c670faa1178c9aa60e7ea1c25110
+
 
 # L_Plot_cum <- list("brksday" = brksday,"atlbl" = atlbl,"lbl" = lbl,"y_lbls" = y_lbls,"TenRg" = TenRg,"xx" = xx)
 save("M_cum","A_hist","DtRng","currYr", "currWk","currday","L_T_expansion",

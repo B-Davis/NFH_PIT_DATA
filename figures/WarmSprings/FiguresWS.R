@@ -26,7 +26,7 @@ legend("topright",sprintf("Age-%s",0:4),fill = col[1:5],bty = "n")
 
 
 ##################
-### Cumalitive ###
+### Cumulative ###
 ##################
 # plot
 for(i in 1:length(L_Plot_cum)) assign(names(L_Plot_cum)[i], L_Plot_cum[[i]])
